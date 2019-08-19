@@ -8,7 +8,7 @@ from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 classifier = Sequential()
 
 # Step 1 - Convolution
-classifier.add(Conv2D(16, kernel_size=2, activation='relu', input_shape=(28, 28, 1)))
+classifier.add(Conv2D(64, kernel_size=2, activation='relu', input_shape=(28, 28, 1)))
 
 # Step 2 - Max Pooling
 classifier.add(MaxPooling2D(pool_size = (2,2)))
@@ -55,3 +55,29 @@ y_test = lb.fit_transform(y_test)
 
 # Training the dataset
 classifier.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10)
+
+
+# Predicting Classes
+import numpy as np
+import matplotlib.pyplot as plt
+
+test_set = pd.read_csv("sign_mnist_test.csv")
+test_set_data = np.array(test_set)
+label = test_set_data[:,0]
+images = test_set_data[:,[range(1,785)]]
+
+for i in range(len(testX)):
+    x = np.reshape(testX[i],[1,28,28,1])
+    classes = classifier.predict_classes(x)
+    img = images[i].reshape(28,28)
+    plt.imshow(img, cmap='gray')
+    plt.show()
+    print("Original Image Label: ",test[i][0],", Original Character: ",chr(test[i][0]+ord("a")))
+    if(classes>=9):
+        print ("Predicted Label: ",classes+1,", Original Character: ",chr(classes+1+ord("a")))
+    else:
+        print ("Predicted Label: ",classes,", Original Character: ",chr(classes+ord("a")))
+    print("Press any key to continue and q to exit: ")
+    j = input()
+    if(j=="q"):
+        break
