@@ -2,32 +2,33 @@
 
 # Importing all the libraries
 from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 
 # Initialising the CNN
 classifier = Sequential()
 
 # Step 1 - Convolution
-classifier.add(Conv2D(64, kernel_size=2, activation='relu', input_shape=(28, 28, 1)))
+classifier.add(Conv2D(64, kernel_size=3, activation='relu', input_shape=(28, 28, 1)))
 
 # Step 2 - Max Pooling
 classifier.add(MaxPooling2D(pool_size = (2,2)))
 
 # Adding extra convolution layers
-classifier.add(Conv2D(32, kernel_size=3, activation='relu'))
-classifier.add(MaxPooling2D(pool_size = (3,3)))
-#classifier.add(Conv2D(32, kernel_size=3, activation='relu'))
-#classifier.add(MaxPooling2D(pool_size = (3,3)))
+classifier.add(Conv2D(128, kernel_size=3, activation='relu'))
+classifier.add(MaxPooling2D(pool_size = (2,2)))
+classifier.add(Conv2D(256, kernel_size=2, activation='relu'))
+classifier.add(MaxPooling2D(pool_size = (2,2)))
 
 # Step 3 - Flatten
 classifier.add(Flatten())
 
 # Step 4 - Fully Connected Layer
-classifier.add(Dense(128, activation='relu'))
+classifier.add(Dense(256, activation='relu'))
+classifier.add(Dropout(0.3))
 classifier.add(Dense(24, activation='softmax'))
 
 # Compile the Model
-classifier.compile(optimizer='sgd', loss='categorical_crossentropy', metrics=['accuracy'])
+classifier.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Importing the Dataset
 import pandas as pd
@@ -54,7 +55,7 @@ y_train = lb.fit_transform(y_train)
 y_test = lb.fit_transform(y_test)
 
 # Training the dataset
-classifier.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10)
+classifier.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=25)
 
 
 # Predicting Classes
