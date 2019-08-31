@@ -55,7 +55,7 @@ y_train = lb.fit_transform(y_train)
 y_test = lb.fit_transform(y_test)
 
 # Training the dataset
-classifier.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=25)
+classifier.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=5)
 
 
 # Predicting Classes
@@ -75,9 +75,9 @@ for i in range(len(testX)):
     plt.show()
     print("Original Image Label: ",test[i][0],", Original Character: ",chr(test[i][0]+ord("a")))
     if(classes>=9):
-        print ("Predicted Label: ",classes+1,", Original Character: ",chr(classes+1+ord("a")))
+        print ("Predicted Label: ",classes+1,", Predicted Character: ",chr(classes+1+ord("a")))
     else:
-        print ("Predicted Label: ",classes,", Original Character: ",chr(classes+ord("a")))
+        print ("Predicted Label: ",classes,", Predicted Character: ",chr(classes+ord("a")))
     print("Press any key to continue and q to exit: ")
     j = input()
     if(j=="q"):
